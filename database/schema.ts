@@ -32,6 +32,59 @@ export class AuthAccessTokenSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class CocktailIngredientSchema extends BaseModel {
+  static $columns = ['cocktailId', 'createdAt', 'id', 'ingredientId', 'measure', 'updatedAt'] as const
+  $columns = CocktailIngredientSchema.$columns
+  @column({ isPrimary: true })
+  declare cocktailId: number
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare id: number
+  @column()
+  declare ingredientId: number
+  @column()
+  declare measure: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class CocktailSchema extends BaseModel {
+  static $columns = ['category', 'createdAt', 'id', 'instructions', 'name', 'updatedAt'] as const
+  $columns = CocktailSchema.$columns
+  @column()
+  declare category: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare instructions: string
+  @column()
+  declare name: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class IngredientSchema extends BaseModel {
+  static $columns = ['createdAt', 'description', 'id', 'imageUrl', 'isAlcoholic', 'name', 'updatedAt'] as const
+  $columns = IngredientSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare description: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare imageUrl: string
+  @column()
+  declare isAlcoholic: boolean
+  @column()
+  declare name: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
 export class UserSchema extends BaseModel {
   static $columns = ['createdAt', 'email', 'fullName', 'id', 'password', 'updatedAt'] as const
   $columns = UserSchema.$columns
