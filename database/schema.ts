@@ -35,11 +35,11 @@ export class AuthAccessTokenSchema extends BaseModel {
 export class CocktailIngredientSchema extends BaseModel {
   static $columns = ['cocktailId', 'createdAt', 'id', 'ingredientId', 'measure', 'updatedAt'] as const
   $columns = CocktailIngredientSchema.$columns
-  @column({ isPrimary: true })
+  @column()
   declare cocktailId: number
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
-  @column()
+  @column({ isPrimary: true })
   declare id: number
   @column()
   declare ingredientId: number
