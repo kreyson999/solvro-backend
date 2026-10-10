@@ -30,6 +30,66 @@ const routes = {
     tokens: [{"old":"/api/v1/account/logout","type":0,"val":"api","end":""},{"old":"/api/v1/account/logout","type":0,"val":"v1","end":""},{"old":"/api/v1/account/logout","type":0,"val":"account","end":""},{"old":"/api/v1/account/logout","type":0,"val":"logout","end":""}],
     types: placeholder as Registry['profile.access_tokens.destroy']['types'],
   },
+  'cocktails.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/v1/cocktails',
+    tokens: [{"old":"/api/v1/cocktails","type":0,"val":"api","end":""},{"old":"/api/v1/cocktails","type":0,"val":"v1","end":""},{"old":"/api/v1/cocktails","type":0,"val":"cocktails","end":""}],
+    types: placeholder as Registry['cocktails.index']['types'],
+  },
+  'cocktails.store': {
+    methods: ["POST"],
+    pattern: '/api/v1/cocktails',
+    tokens: [{"old":"/api/v1/cocktails","type":0,"val":"api","end":""},{"old":"/api/v1/cocktails","type":0,"val":"v1","end":""},{"old":"/api/v1/cocktails","type":0,"val":"cocktails","end":""}],
+    types: placeholder as Registry['cocktails.store']['types'],
+  },
+  'cocktails.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/v1/cocktails/:id',
+    tokens: [{"old":"/api/v1/cocktails/:id","type":0,"val":"api","end":""},{"old":"/api/v1/cocktails/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/cocktails/:id","type":0,"val":"cocktails","end":""},{"old":"/api/v1/cocktails/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['cocktails.show']['types'],
+  },
+  'cocktails.update': {
+    methods: ["PUT","PATCH"],
+    pattern: '/api/v1/cocktails/:id',
+    tokens: [{"old":"/api/v1/cocktails/:id","type":0,"val":"api","end":""},{"old":"/api/v1/cocktails/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/cocktails/:id","type":0,"val":"cocktails","end":""},{"old":"/api/v1/cocktails/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['cocktails.update']['types'],
+  },
+  'cocktails.destroy': {
+    methods: ["DELETE"],
+    pattern: '/api/v1/cocktails/:id',
+    tokens: [{"old":"/api/v1/cocktails/:id","type":0,"val":"api","end":""},{"old":"/api/v1/cocktails/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/cocktails/:id","type":0,"val":"cocktails","end":""},{"old":"/api/v1/cocktails/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['cocktails.destroy']['types'],
+  },
+  'ingredients.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/v1/ingredients',
+    tokens: [{"old":"/api/v1/ingredients","type":0,"val":"api","end":""},{"old":"/api/v1/ingredients","type":0,"val":"v1","end":""},{"old":"/api/v1/ingredients","type":0,"val":"ingredients","end":""}],
+    types: placeholder as Registry['ingredients.index']['types'],
+  },
+  'ingredients.store': {
+    methods: ["POST"],
+    pattern: '/api/v1/ingredients',
+    tokens: [{"old":"/api/v1/ingredients","type":0,"val":"api","end":""},{"old":"/api/v1/ingredients","type":0,"val":"v1","end":""},{"old":"/api/v1/ingredients","type":0,"val":"ingredients","end":""}],
+    types: placeholder as Registry['ingredients.store']['types'],
+  },
+  'ingredients.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/v1/ingredients/:id',
+    tokens: [{"old":"/api/v1/ingredients/:id","type":0,"val":"api","end":""},{"old":"/api/v1/ingredients/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/ingredients/:id","type":0,"val":"ingredients","end":""},{"old":"/api/v1/ingredients/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['ingredients.show']['types'],
+  },
+  'ingredients.update': {
+    methods: ["PUT","PATCH"],
+    pattern: '/api/v1/ingredients/:id',
+    tokens: [{"old":"/api/v1/ingredients/:id","type":0,"val":"api","end":""},{"old":"/api/v1/ingredients/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/ingredients/:id","type":0,"val":"ingredients","end":""},{"old":"/api/v1/ingredients/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['ingredients.update']['types'],
+  },
+  'ingredients.destroy': {
+    methods: ["DELETE"],
+    pattern: '/api/v1/ingredients/:id',
+    tokens: [{"old":"/api/v1/ingredients/:id","type":0,"val":"api","end":""},{"old":"/api/v1/ingredients/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/ingredients/:id","type":0,"val":"ingredients","end":""},{"old":"/api/v1/ingredients/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['ingredients.destroy']['types'],
+  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }

@@ -11,10 +11,6 @@ import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 import { controllers } from '#generated/controllers'
 
-router.get('/', () => {
-  return { hello: 'world' }
-})
-
 router
   .group(() => {
     router
@@ -33,5 +29,19 @@ router
       .prefix('account')
       .as('profile')
       .use(middleware.auth())
+
+    router
+      .resource('cocktails', controllers.Cocktails)
+      .apiOnly()
+      .where('id', router.matchers.number())
+      .use(['store', 'update', 'destroy'], [middleware.auth(), middleware.role({ roles: ['admin'] })])
+
+    router
+      .resource('ingredients', controllers.Ingredients)
+      .apiOnly()
+      .where('id', router.matchers.number())
+      .use(['store', 'update', 'destroy'], [middleware.auth(), middleware.role({ roles: ['admin'] })])
+
+    
   })
   .prefix('/api/v1')
