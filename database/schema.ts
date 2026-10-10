@@ -50,7 +50,7 @@ export class CocktailIngredientSchema extends BaseModel {
 }
 
 export class CocktailSchema extends BaseModel {
-  static $columns = ['category', 'createdAt', 'id', 'instructions', 'name', 'updatedAt'] as const
+  static $columns = ['category', 'createdAt', 'id', 'instructions', 'name', 'updatedAt', 'userId'] as const
   $columns = CocktailSchema.$columns
   @column()
   declare category: string
@@ -64,10 +64,12 @@ export class CocktailSchema extends BaseModel {
   declare name: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+  @column()
+  declare userId: number | null
 }
 
 export class IngredientSchema extends BaseModel {
-  static $columns = ['createdAt', 'description', 'id', 'imageUrl', 'isAlcoholic', 'name', 'updatedAt'] as const
+  static $columns = ['createdAt', 'description', 'id', 'imageUrl', 'isAlcoholic', 'name', 'updatedAt', 'userId'] as const
   $columns = IngredientSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -83,6 +85,8 @@ export class IngredientSchema extends BaseModel {
   declare name: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+  @column()
+  declare userId: number | null
 }
 
 export class UserSchema extends BaseModel {

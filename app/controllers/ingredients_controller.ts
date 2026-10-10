@@ -3,6 +3,7 @@ import Ingredient from '#models/ingredient'
 import IngredientTransformer from '#transformers/ingredient_transformer'
 import { createIngredientValidator, updateIngredientValidator } from '#validators/ingredient'
 import { paginationValidator } from '#validators/pagination'
+import IngredientPolicy from '#policies/ingredient_policy'
 
 export default class IngredientsController {
   /**
@@ -23,9 +24,10 @@ export default class IngredientsController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request, serialize, response }: HttpContext) {
+  async store({ request, serialize, response, bouncer, auth }: HttpContext) {
+    await bouncer.with(IngredientPolicy).authorize('create')
     const data = await request.validateUsing(createIngredientValidator)
-    const ingredient = await Ingredient.create(data)
+    const ingredient = await Ingredient.create({ ...data, userId: auth.getUserOrFail().id })
 
     response.status(201)
     return serialize(IngredientTransformer.transform(ingredient))
@@ -44,8 +46,9 @@ export default class IngredientsController {
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request, serialize }: HttpContext) {
+  async update({ params, request, serialize, bouncer }: HttpContext) {
     const ingredient = await Ingredient.findOrFail(params.id)
+    await bouncer.with(IngredientPolicy).authorize('update', ingredient)
     const data = await request.validateUsing(updateIngredientValidator)
 
     ingredient.merge(data)
@@ -57,8 +60,9 @@ export default class IngredientsController {
   /**
    * Delete record
    */
-  async destroy({ params, serialize }: HttpContext) {
+  async destroy({ params, serialize, bouncer }: HttpContext) {
     const ingredient = await Ingredient.findOrFail(params.id)
+    await bouncer.with(IngredientPolicy).authorize('delete', ingredient)
     await ingredient.delete()
     
     return serialize(IngredientTransformer.transform(ingredient))

@@ -34,13 +34,13 @@ router
       .resource('cocktails', controllers.Cocktails)
       .apiOnly()
       .where('id', router.matchers.number())
-      .use(['store', 'update', 'destroy'], [middleware.auth(), middleware.role({ roles: ['admin'] })])
+      .use(['store', 'update', 'destroy'], [middleware.auth()])
 
     router
       .resource('ingredients', controllers.Ingredients)
       .apiOnly()
       .where('id', router.matchers.number())
-      .use(['store', 'update', 'destroy'], [middleware.auth(), middleware.role({ roles: ['admin'] })])
+      .use(['store', 'update', 'destroy'], [middleware.auth()])
 
     
   })

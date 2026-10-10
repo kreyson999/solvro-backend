@@ -4,6 +4,7 @@ import CocktailTransformer from '#transformers/cocktail_transformer'
 import { createCocktailValidator, updateCocktailValidator } from '#validators/cocktail'
 import { paginationValidator } from '#validators/pagination'
 import db from '@adonisjs/lucid/services/db'
+import CocktailPolicy from '#policies/cocktail_policy'
 
 export default class CocktailsController {
   /**
@@ -25,11 +26,12 @@ export default class CocktailsController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request, serialize, response }: HttpContext) {
+  async store({ request, serialize, response, bouncer, auth }: HttpContext) {
+    await bouncer.with(CocktailPolicy).authorize('create')
     const { ingredients, ...data} = await request.validateUsing(createCocktailValidator)
 
     const cocktail = await db.transaction(async (trx) => {
-      const cocktail = await Cocktail.create(data, { client: trx })
+      const cocktail = await Cocktail.create({ ...data, userId: auth.getUserOrFail().id }, { client: trx })
 
       await cocktail.related('ingredients')
         .attach(Object.fromEntries(
@@ -56,8 +58,9 @@ export default class CocktailsController {
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request, serialize }: HttpContext) {
+  async update({ params, request, serialize, bouncer }: HttpContext) {
     const cocktail = await Cocktail.findOrFail(params.id)
+    await bouncer.with(CocktailPolicy).authorize('update', cocktail)
     const { ingredients, ...data } = await request.validateUsing(updateCocktailValidator)
 
     await db.transaction(async (trx) => {
@@ -79,8 +82,9 @@ export default class CocktailsController {
   /**
    * Delete record
    */
-  async destroy({ params, serialize }: HttpContext) {
+  async destroy({ params, serialize, bouncer }: HttpContext) {
     const cocktail = await Cocktail.findOrFail(params.id)
+    await bouncer.with(CocktailPolicy).authorize('delete', cocktail)
     await cocktail.load('ingredients')
     await cocktail.delete()
 

@@ -1,7 +1,8 @@
 import { IngredientSchema } from '#database/schema'
-import { manyToMany } from '@adonisjs/lucid/orm'
+import { belongsTo, manyToMany } from '@adonisjs/lucid/orm'
 import Cocktail from '#models/cocktail'
-import type { ManyToMany } from '@adonisjs/lucid/types/relations'
+import User from '#models/user'
+import type { BelongsTo, ManyToMany } from '@adonisjs/lucid/types/relations'
 
 export default class Ingredient extends IngredientSchema {
     @manyToMany(() => Cocktail, {
@@ -9,4 +10,9 @@ export default class Ingredient extends IngredientSchema {
         pivotTimestamps: true,
     })
     declare cocktails: ManyToMany<typeof Cocktail>
+
+    @belongsTo(() => User, {
+        foreignKey: 'userId'
+    })
+    declare author: BelongsTo<typeof User>
 }
