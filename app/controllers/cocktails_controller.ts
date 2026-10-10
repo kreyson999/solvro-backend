@@ -1,8 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Cocktail from '#models/cocktail'
 import CocktailTransformer from '#transformers/cocktail_transformer'
-import { createCocktailValidator, updateCocktailValidator } from '#validators/cocktail'
-import { paginationValidator } from '#validators/pagination'
+import { createCocktailValidator, listCocktailsValidator, updateCocktailValidator } from '#validators/cocktail'
 import db from '@adonisjs/lucid/services/db'
 import CocktailPolicy from '#policies/cocktail_policy'
 
@@ -11,9 +10,22 @@ export default class CocktailsController {
    * Display a list of resource
    */
   async index({ serialize, request }: HttpContext) {
-    const { page = 1, perPage = 20 } = await request.validateUsing(paginationValidator)
+    const { page = 1, perPage = 20, search, category, userId, alcoholic, ingredientIds, sort = 'name', order = 'asc' } = await request.validateUsing(listCocktailsValidator)
     const cocktails = await Cocktail.query()
-      .orderBy('name', 'asc')
+      .if(search, (q) => q.whereILike('name', `%${search}%`))
+      .if(category, (q) => q.where('category', category!))
+      .if(userId, (q) => q.where('userId', userId!))
+      .if(alcoholic === true, (q) => 
+        q.whereDoesntHave('ingredients', (iq) => {
+          iq.where('isAlcoholic', true)
+        }
+      ))
+      .if(ingredientIds, (q) => {
+        for (const id of ingredientIds!) {
+          q.whereHas('ingredients', (iq) => iq.where('ingredients.id', id))
+        }
+      })
+      .orderBy(sort, order)
       .orderBy('id', 'asc')
       .preload('ingredients')
       .paginate(page, perPage)

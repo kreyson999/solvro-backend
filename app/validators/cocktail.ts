@@ -1,4 +1,5 @@
 import vine from '@vinejs/vine'
+import { paginationFields } from '#validators/pagination'
 
 const name = () => vine.string().trim().minLength(3).maxLength(50)
 const category = () => vine.string().trim().minLength(3).maxLength(50)
@@ -8,6 +9,21 @@ const ingredients = () => vine.array(vine.object({
     measure: vine.string().trim().minLength(1).maxLength(50),
   })).minLength(1).distinct('id')
 
+
+export const listCocktailsValidator = vine.create({
+  search: vine.string().trim().minLength(1).maxLength(50),
+  category: vine.string().trim().minLength(1).maxLength(50),
+  alcoholic: vine.boolean().optional(),
+  ingredientIds: vine
+    .string()
+    .regex(/^\d+(,\d+)*$/)
+    .transform((value) => value.split(',').map(Number))
+    .optional(),
+  userId: vine.number().withoutDecimals().min(1).optional(),
+  sort: vine.enum(['name', 'category', 'createdAt']).optional(),
+  order: vine.enum(['asc', 'desc']).optional(),
+  ...paginationFields
+})
 
 export const createCocktailValidator = vine.create({
   name: name(),

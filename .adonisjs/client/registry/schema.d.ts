@@ -62,7 +62,7 @@ export interface Registry {
       body: {}
       paramsTuple: []
       params: {}
-      query: ExtractQueryForGet<InferInput<(typeof import('#validators/pagination').paginationValidator)>>
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/cocktail').listCocktailsValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/cocktails_controller').default['index']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cocktails_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
